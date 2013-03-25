@@ -1,0 +1,1277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>PJ Calc</title></head><body>//pj calc
+
+<script type="text/javascript"><!--
+
+
+
+var app = new Array();   // (A)
+var lineList = new Array();
+var docRef = new Array();                       // (B)
+var gPJ = new Array();
+
+
+var ks= new Array(200);
+var kl= new Array(200);
+var kw= new Array(200);
+var kr= new Array(200);
+var INCHES=100;
+
+ks["CX86"]= "3000*INCHES/100";
+ks["EX3"]= "2900*INCHES/100";
+ks["EW5"]= "3170*INCHES/100";
+ks["CX21"]= "2900*INCHES/100";
+ks["SX50"]= "3000*INCHES/100";
+ks["SX80"]= "3000*INCHES/100";
+ks["SX6"]= "3000*INCHES/100";
+ks["FX52sf"]= "(INCHES*24.711/1.3102-81.9)*1.025";
+ks["FX52lz"]= "(INCHES*89.822/1.3102-209.3)*1.025";
+ks["FX52std"]= "(INCHES*50.127/1.3102-73.9)*1.025";
+ks["FX52sz"]= "(INCHES*41.750/1.3102-116.3)*1.025";
+ks["FX40std"]= "(INCHES*30.31/0.7923-65.32981)*1.012";
+ks["FX40sz"]= "(INCHES*22.60/0.7923-55.3)*1.02";
+ks["FX40sf"]= "INCHES*13.14/0.7923-63.90778";
+ks["FW41std"]= "(INCHES*30.04/0.7488-69.0)*1.012";
+ks["FW41sf"]= "INCHES*13.04/0.7488-67.1";
+ks["EP761"]= "3963 *INCHES/100";
+ks["EMP82"]= "2970 *INCHES/100";
+ks["EMP730"]= "3300 *INCHES/100";
+ks["EMP745"]= "3400 *INCHES/100";
+ks["EMP765"]= "3400 *INCHES/100";
+ks["EMP1710"]= "3400 *INCHES/100";
+ks["EMP1810"]= "2960 *INCHES/100";
+ks["EMP1825"]= "2960 *INCHES/100";
+ks["LPXF31S02Z"]= "4000 *INCHES/100";
+ks["LPXF31W02Z"]= "2800 *INCHES/100";
+ks["PDF30z"]= "2642*INCHES/100";
+ks["PB8263"]= "3443 *INCHES/100";
+ks["PTD5000150"]= "28*INCHES-54.0";
+ks["PTD5000055"]= "17.1*INCHES-47.6";
+ks["PTD5000std"]= "37.0*INCHES-65.0";
+ks["THD56001"]= "2800 *INCHES/100";
+ks["THD5600std"]= "3600 *INCHES/100";
+ks["THD56003"]= "7900 *INCHES/100";
+ks["XJ-S30"]= "2800 *INCHES/100";
+ks["XJ-S39"]= "2800 *INCHES/100";
+ks["V1100z"]= "3900 *INCHES/100";
+ks["U4-232"]= "3910 *INCHES/100";
+ks["U5-532"]= "3670 *INCHES/100";
+ks["U7-137SF"]= "3140 *INCHES/100";
+ks["KGPH1004"]= "1320 *INCHES/100";
+
+
+ks["TDPT9"]= "3940 *INCHES/100";
+ks["TDPT95"]= "3670 *INCHES/100";
+ks["TDPT350"]= "3300 *INCHES/100";
+ks["EMP8300LS02"]= "3760 *INCHES/100";
+ks["EMP8300LW02"]= "2700 *INCHES/100";
+ks["EMP8300LM01"]= "4960 *INCHES/100";
+ks["EMP7800"]= "2720 *INCHES/100";
+ks["EMP7950"]= "2745 *INCHES/100";
+ks["EB1720"]= "2240 *INCHES/100";
+ks["EB1730W"]= "2100 *INCHES/100";
+ks["EBZ8455W"]= "3740 *INCHES/100+64*(INCHES-100)/100";
+ks["EBZ8455WR04"]= "1650 *INCHES/100+70*(INCHES-100)/100";
+ks["EBZ8455WW04"]= "2820 *INCHES/100+67*(INCHES-100)/100";
+ks["EBZ8455WM06"]= "5760 *INCHES/100+135*(INCHES-100)/100";
+ks["EBZ8455WM07"]= "8410 *INCHES/100+230*(INCHES-100)/100";
+ks["EBZ8050W"]= "3680 *INCHES/100+64*(INCHES-100)/100";
+ks["EBZ8050WR04"]= "1620 *INCHES/100+70*(INCHES-100)/100";
+ks["EBZ8050WW04"]= "2770 *INCHES/100+67*(INCHES-100)/100";
+ks["EBZ8050WM06"]= "5670 *INCHES/100+135*(INCHES-100)/100";
+ks["EBZ8050WM07"]= "8270 *INCHES/100+230*(INCHES-100)/100";
+ks["EMPTW2K"]= "2980 *INCHES/100";
+ks["EBG5350"]= "2660 *INCHES/100";
+ks["AX100"]= "3050 *INCHES/100";
+ks["THAE900"]= "3060 *INCHES/100";
+ks["THAE2000"]= "3000 *INCHES/100";
+ks["XD205R"]= "3250 *INCHES/100";
+ks["XD250"]= "3300 *INCHES/100";
+ks["EX200"]= "3800 *INCHES/100";
+ks["XD95ST"]= "1800 *INCHES/100";
+ks["FLV7K_FR"]= "1900 *INCHES/100";
+ks["FLV7K_SZ"]= "3200 *INCHES/100";
+ks["FD630"]= "3100 *INCHES/100";
+ks["HC1100"]= "3600 *INCHES/100";
+ks["THDW10000LE6"]= "20.7 *INCHES-56.6";
+ks["THDW10000LE1"]= "30.7*INCHES-76.0";
+ks["THDW10000LE2"]= "41.2*INCHES-79.5";
+ks["THDW10000LE3"]= "61.7 *INCHES-95.8";
+ks["THDW10000sf5"]= "15.8 *INCHES-83.5";
+
+ks["THD10000LE6"]= "20.7 *INCHES-56.6";
+ks["THD10000LE1"]= "30.7*INCHES-76.0";
+ks["THD10000LE2"]= "41.2*INCHES-79.5";
+ks["THD10000LE3"]= "61.7 *INCHES-95.8";
+ks["THD10000sf5"]= "15.8 *INCHES-83.5";
+ks["PTDZ8700LE6"]= "20.1 *INCHES-56.6";
+ks["PTDZ8700LE1"]= "29.8*INCHES-76.0";
+ks["PTDZ8700LE2"]= "40.0*INCHES-79.5";
+ks["PTDZ8700LE3"]= "60.1 *INCHES-95.8";
+ks["PTDZ8700sf5"]= "15.4 *INCHES-83.5";
+
+ks["THD7700LE1"]= "2990 *INCHES/100";
+ks["THD7700LE6"]= "2010 *INCHES/100";
+ks["THDW7000LE1"]= "34.3 *INCHES-76.0";
+ks["THDW7000LE2"]= "46.0 *INCHES-79.5";
+ks["THDW7000LE3"]= "68.9 *INCHES-95.8";
+ks["THDW7000LE4"]= "115.1 *INCHES-76.0";
+ks["THDW7000LE8"]= "183.1 *INCHES-115.8";
+ks["THDW7000LE6"]= "23.1 *INCHES-56.6";
+ks["THDW7000LE5fix"]= "17.6 *INCHES-83.5";
+ks["PTD6710fix"]= "17.5 *INCHES-47.6";
+ks["PTD6710DLE080"]= "17.4*INCHES-47.1";
+ks["PTD6710DLE150"]= "28.6*INCHES-54.0";
+ks["PTD6710fixHD"]= "18.0 *INCHES-47.6";
+ks["PTD6710DLE080HD"]= "17.9*INCHES-47.1";
+ks["PTD6710DLE150HD"]= "29.4*INCHES-54.0";
+ks["PTDW6300std"]= "39.7*INCHES-65.0";
+ks["PTDW6300DLE150"]= "30.0*INCHES-54.0";
+ks["PTDW8300DLE6"]= "23.1 *INCHES-56.6";
+ks["PTDW8300DLE5"]= "17.6 *INCHES-83.5";
+ks["PTVX400"]= "24.2 *INCHES-33.4";
+
+ks["NP500WJ"]= "2900 *INCHES/100";
+ks["NP325001FL"]= "2032*0.8*INCHES/100";
+ks["NP325002ZL"]= "2032*1.2*INCHES/100";
+ks["NP3250std"]= "2032*1.5*INCHES/100";
+ks["NP3250W01FL"]= "2154*0.8*INCHES/100";
+ks["NP3250W02ZL"]= "2154*1.2*INCHES/100";
+ks["NP3250Wstd"]= "2154*1.5*INCHES/100";
+ks["NP4k06FL"]= "1600 *INCHES/100";
+ks["NP4k07ZL"]= "2720 *INCHES/100";
+ks["NP4k08ZL"]= "3640 *INCHES/100";
+ks["NP41k06FL"]= "1740 *INCHES/100";
+ks["NP41k07ZL"]= "2950 *INCHES/100";
+ks["NP41k08ZL"]= "3950 *INCHES/100";
+ks["NP60J"]= "3690 *INCHES/100";
+ks["NP115J"]= "3930 *INCHES/100";
+ks["NP300WJ"]= "2880 *INCHES/100";
+ks["NPPA500UJL11FL"]= "1723 *INCHES/100";
+ks["NPPA500UJL12"]= "2154*1.2 *INCHES/100";
+ks["NPPA500UJL13"]= "2154*1.5 *INCHES/100";
+ks["NPPX750UJL16FL"]= "1723 *INCHES/100";
+ks["NPPX750UJL17"]= "2154*1.3 *INCHES/100";
+ks["NPPX750UJL18"]= "2154*1.7 *INCHES/100";
+ks["HL12KHD12Z"]= "2770 *INCHES/100";
+ks["HL12KHD14Z"]= "3210 *INCHES/100";
+ks["HL12KHD10F"]= "2210 *INCHES/100";
+ks["XG9280X"]= "3500 *INCHES/100";
+ks["TDPEX20"]= "1500 *INCHES/100";
+ks["TDPEW25"]= "1200 *INCHES/100";
+ks["CPX1250sf"]= "1600 *INCHES/100";
+ks["CPSX8350std"]= "24.1 *INCHES -38.0";
+ks["LPXL40"]= "1288 *INCHES/100";
+ks["LPZ2K"]= "3000 *INCHES/100";
+ks["DHT8KW52"]= "1770 *INCHES/100";
+ks["DHT8KW51"]= "2700 *INCHES/100";
+ks["DHT8KW50"]= "3300 *INCHES/100";
+ks["DHT8KW53"]= "2700 *INCHES/100";
+ks["DHT8KS51"]= "4000 *INCHES/100";
+ks["LCWB40DN"]= "2530 *INCHES/100";
+ks["MP771"]= "1351 *INCHES/100";
+ks["MP772ST"]= "1230 *INCHES/100";
+ks["MP776"]= "1235 *INCHES/100";
+ks["MW811ST"]= "1050 *INCHES/100";
+ks["MP624"]= "3700 *INCHES/100";
+ks["SP890"]= "3590 *INCHES/100";
+ks["SP870"]= "3300 *INCHES/100";
+ks["CPA100J"]= "787.5 *INCHES/100";
+ks["CPRX80J"]= "2900 *INCHES/100";
+ks["P5280"]= "3960 *INCHES/100";
+ks["X1130"]= "3779 *INCHES/100";
+ks["HD8K116Z"]= "1.16*INCHES*25.4+5.36*25.4";
+ks["HD8K067f"]= "0.7058*INCHES*25.4+2.23*25.4";
+ks["HD10K116"]= "22.138*INCHES*1.16+201.9";
+ks["HD10K11f"]= "22.138*INCHES*1.1+204";
+ks["HD10K067f"]= "22.138*INCHES*0.67+178";
+
+kl["CX86"]= "3450*INCHES/100";
+kl["EX3"]= "3600*INCHES/100";
+kl["EW5"]= "3580*INCHES/100";
+kl["CX21"]= "3600*INCHES/100";
+kl["SX50"]= "5000*INCHES/100";
+kl["SX80"]= "4400*INCHES/100";
+kl["SX6"]= "4900*INCHES/100";
+kl["FX52sf"]=  "(INCHES*24.711/1.3102-81.9)*1.025";
+kl["FX52lz"]=  "(INCHES*137.560/1.3102-211.6)*0.975";
+kl["FX52std"]=  "(INCHES*64.519/1.3102-107.9)*0.975";
+kl["FX52sz"]=  "(INCHES*45.821/1.3102-112.9)*0.975";
+kl["FX40std"]= "(INCHES*39.627024/0.7923-64.20122)*0.98";
+kl["FX40sz"]= "(INCHES*31.39/0.79233-51.2)*0.98";
+kl["FX40sf"]= "INCHES*13.14/0.7923-63.90778";
+kl["FW41std"]= "(INCHES*39.31/0.7488-67.9)*0.98";
+kl["FW41sf"]= "INCHES*13.04/0.7488-67.1";
+kl["EP761"]= "4367 *INCHES/100";
+kl["EMP82"]= "3580 *INCHES/100";
+kl["EMP730"]= "3900 *INCHES/100";
+kl["EMP745"]=  "4000*INCHES/100";
+kl["EMP765"]=  "4000*INCHES/100";
+kl["EMP1710"]=  "4000*INCHES/100";
+kl["EMP1810"]= "4840 *INCHES/100";
+kl["EMP1825"]= "4840 *INCHES/100";
+kl["LPXF31S02Z"]= "5300 *INCHES/100";
+kl["LPXF31W02Z"]= "3700 *INCHES/100";
+kl["PDF30z"]= "3454*INCHES/100";
+kl["PB8263"]=  "3944*INCHES/100";
+kl["PTD5000150"]= "40.3*INCHES-49.8";
+kl["PTD5000055"]= "17.1*INCHES-47.6";
+kl["PTD5000std"]= "48.8*INCHES-63.8";
+kl["THD56001"]=  "3600*INCHES/100";
+kl["THD5600std"]=  "4800*INCHES/100";
+kl["THD56003"]=  "12100*INCHES/100";
+kl["XJ-S30"]=  "5600*INCHES/100";
+kl["XJ-S39"]=  "5600*INCHES/100";
+kl["V1100z"]=  "4700*INCHES/100";
+kl["U4-232"]= "4700*INCHES/100";
+kl["U5-532"]= "4430 *INCHES/100";
+kl["U7-137SF"]= "3650 *INCHES/100";
+kl["KGPH1004"]= "1320 *INCHES/100";
+
+kl["TDPT9"]=  "4330*INCHES/100";
+kl["TDPT95"]=  "5930*INCHES/100";
+kl["TDPT350"]=  "3990*INCHES/100";
+kl["EMP8300LS02"]=  "5110*INCHES/100";
+kl["EMP8300LW02"]=  "3760*INCHES/100";
+kl["EMP8300LM01"]= "7450 *INCHES/100";
+kl["EMP7800"]=  "3680*INCHES/100";
+kl["EMP7950"]=  "3700*INCHES/100";
+kl["EB1720"]= "2740 *INCHES/100";
+kl["EB1730W"]= "2600 *INCHES/100";
+kl["EBZ8455W"]= "6070 *INCHES/100+64*(INCHES-100)/100";
+kl["EBZ8455WR04"]= "1650 *INCHES/100+70*(INCHES-100)/100";
+kl["EBZ8455WW04"]= "3860 *INCHES/100+67*(INCHES-100)/100";
+kl["EBZ8455WM06"]= "8810 *INCHES/100+135*(INCHES-100)/100";
+kl["EBZ8455WM07"]= "12840 *INCHES/100+230*(INCHES-100)/100";
+kl["EBZ8050W"]= "5970 *INCHES/100+64*(INCHES-100)/100";
+kl["EBZ8050WR04"]= "1620 *INCHES/100+70*(INCHES-100)/100";
+kl["EBZ8050WW04"]= "3800 *INCHES/100+67*(INCHES-100)/100";
+kl["EBZ8050WM06"]= "8670 *INCHES/100+135*(INCHES-100)/100";
+kl["EBZ8050WM07"]= "12630 *INCHES/100+230*(INCHES-100)/100";
+kl["EMPTW2K"]= "6360*INCHES/100";
+kl["EBG5350"]= "4830 *INCHES/100";
+kl["AX100"]=  "4400*INCHES/100";
+kl["THAE2000"]= "6000 *INCHES/100";
+kl["THAE900"]= "6160 *INCHES/100";
+kl["XD205R"]=  "3800*INCHES/100";
+kl["XD250"]= "4000 *INCHES/100";
+kl["EX200"]= "4200 *INCHES/100";
+kl["XD95ST"]= "1800 *INCHES/100";
+kl["FLV7K_FR"]= "1900 *INCHES/100";
+kl["FLV7K_SZ"]= "3900 *INCHES/100";
+kl["FD630"]= "4600 *INCHES/100";
+kl["HC1100"]= "4400 *INCHES/100";
+kl["THDW10000LE6"]= "24.8*INCHES-73.6";
+kl["THDW10000LE1"]= "41*INCHES-100.4";
+kl["THDW10000LE2"]= "61.7*INCHES-106.4";
+kl["THDW10000LE3"]= "103.1 *INCHES-121.6";
+kl["THDW10000sf5"]=  "15.8*INCHES-83.5";
+kl["THD10000LE6"]= "24.8*INCHES-73.6";
+kl["THD10000LE1"]= "41*INCHES-100.4";
+kl["THD10000LE2"]= "61.7*INCHES-106.4";
+kl["THD10000LE3"]= "103.1 *INCHES-121.6";
+kl["THD10000sf5"]=  "15.8*INCHES-83.5";
+kl["PTDZ8700LE6"]= "24.1 *INCHES-73.6";
+kl["PTDZ8700LE1"]= "39.9*INCHES-100.4";
+kl["PTDZ8700LE2"]= "60.1*INCHES-106.4";
+kl["PTDZ8700LE3"]= "100.3 *INCHES-101.3";
+kl["PTDZ8700sf5"]= "15.4 *INCHES-83.5";
+
+kl["THD7700LE1"]= "4000 *INCHES/100";
+kl["THD7700LE6"]= "2410 *INCHES/100";
+kl["THDW7000LE1"]= "45.8 *INCHES-100.4";
+kl["THDW7000LE2"]= "68.9 *INCHES-106.4";
+kl["THDW7000LE3"]= "115.1 *INCHES-121.6";
+kl["THDW7000LE4"]= "183.1 *INCHES-101.3";
+kl["THDW7000LE8"]= "343.0 *INCHES-359.8";
+kl["THDW7000LE6"]= "26.8 *INCHES-73.6";
+kl["THDW7000LE5fix"]= "17.6 *INCHES-83.5";
+kl["PTD6710fix"]= "17.5 *INCHES-47.6";
+kl["PTD6710DLE080"]= "21.6*INCHES-44.2";
+kl["PTD6710DLE150"]= "41.3*INCHES-49.8";
+kl["PTD6710fixHD"]= "18.0 *INCHES-47.6";
+kl["PTD6710DLE080HD"]= "22.2*INCHES-44.2";
+kl["PTD6710DLE150HD"]= "42.4*INCHES-49.8";
+kl["PTDW6300std"]= "52.4*INCHES-63.8";
+kl["PTDW6300DLE150"]= "43.3*INCHES-54.0";
+kl["PTDW8300DLE6"]= "27.7 *INCHES-73.6";
+kl["PTDW8300DLE5"]= "17.6 *INCHES-83.5";
+kl["PTVX400"]= "39.1 *INCHES-32.6";
+
+kl["NP500WJ"]= "3500 *INCHES/100";
+kl["NP325001FL"]= "2032*0.8*INCHES/100";
+kl["NP325002ZL"]= "2032*1.5*INCHES/100";
+kl["NP3250std"]= "2032*2.0*INCHES/100";
+kl["NP3250W01FL"]= "2154*0.8*INCHES/100";
+kl["NP3250W02ZL"]= "2154*1.5*INCHES/100";
+kl["NP3250Wstd"]= "2154*2.0*INCHES/100";
+kl["NP4k06FL"]= "1600 *INCHES/100";
+kl["NP4k07ZL"]= "3680 *INCHES/100";
+kl["NP4k08ZL"]= "4820 *INCHES/100";
+kl["NP41k06FL"]= "1740 *INCHES/100";
+kl["NP41k07ZL"]= "3990 *INCHES/100";
+kl["NP41k08ZL"]= "5240 *INCHES/100";
+kl["NP60J"]= "4450 *INCHES/100";
+kl["NP115J"]= "4400 *INCHES/100";
+kl["NP300WJ"]= "4820 *INCHES/100";
+kl["NPPA500UJL11FL"]= "1723 *INCHES/100";
+kl["NPPA500UJL12"]= "2154*1.5 *INCHES/100";
+kl["NPPA500UJL13"]= "2154*3 *INCHES/100";
+kl["NPPX750UJL16FL"]= "1723 *INCHES/100";
+kl["NPPX750UJL17"]= "2154*1.8 *INCHES/100";
+kl["NPPX750UJL18"]= "2154*2.3 *INCHES/100";
+kl["HL12KHD12Z"]= "3210 *INCHES/100";
+kl["HL12KHD14Z"]= "3990 *INCHES/100";
+kl["HL12KHD10F"]= "2210 *INCHES/100";
+kl["XG9280X"]= "4000 *INCHES/100";
+kl["TDPEX20"]= "1500 *INCHES/100";
+kl["TDPEW25"]= "1200 *INCHES/100";
+kl["CPX1250sf"]= "1600 *INCHES/100";
+kl["CPSX8350std"]= "36.3 *INCHES -39.2";
+kl["LPXL40"]= "1288 *INCHES/100";
+kl["LPZ2K"]= "6100 *INCHES/100";
+kl["DHT8KW52"]= "1770 *INCHES/100";
+kl["DHT8KW51"]= "3300 *INCHES/100";
+kl["DHT8KW50"]= "4000 *INCHES/100";
+kl["DHT8KW53"]= "4000 *INCHES/100";
+kl["DHT8KS51"]= "6300 *INCHES/100";
+kl["LCWB40DN"]= "4020 *INCHES/100";
+kl["MP771"]= "1351 *INCHES/100";
+kl["MP772ST"]= "1230 *INCHES/100";
+kl["MP776"]= "1235 *INCHES/100";
+kl["MW811ST"]= "1050 *INCHES/100";
+kl["MP624"]= "4070 *INCHES/100";
+kl["SP890"]= "5386 *INCHES/100";
+kl["SP870"]= "3830 *INCHES/100";
+kl["CPA100J"]= "787.5 *INCHES/100";
+kl["CPRX80J"]= "3500 *INCHES/100";
+kl["P5280"]= "4368 *INCHES/100";
+kl["X1130"]= "4145 *INCHES/100";
+kl["HD8K116Z"]= "1.49*INCHES*25.4+5.46*25.4";
+kl["HD8K067f"]= "0.7058*INCHES*25.4+2.23*25.4";
+kl["HD10K116"]= "22.138*INCHES*1.49+205";
+kl["HD10K11f"]= "22.138*INCHES*1.1+204";
+kl["HD10K067f"]= "22.138*INCHES*0.67+178";
+
+
+// 4:3 0.75
+// 16:9 (1920x1080,1280x720) 0.5625
+// 16:9 (1920x1200) 0.625
+// 16:9 (1366x768) 0.5622
+// 16:10(1280x800) 0.625
+
+
+kw["CX86"]= 0.75;
+kw["EX3"]= 0.75;
+kw["EW5"]= 0.625;//1280x800
+kw["CX21"]= 0.75;
+kw["SX50"]= 0.75;
+kw["SX80"]= 0.75;
+kw["SX6"]= 0.75;
+kw["FX52sf"]=  0.75;
+kw["FX52lz"]=  0.75;
+kw["FX52std"]=  0.75;
+kw["FX52sz"]=  0.75;
+kw["FX40std"]= 0.75;
+kw["FX40sz"]= 0.75;
+kw["FX40sf"]= 0.75;
+kw["FW41std"]= 0.625;//1280x800
+kw["FW41sf"]= 0.625;//1280x800
+kw["EP761"]= 0.75 ;
+kw["EMP82"]= 0.75 ;
+kw["EMP730"]= 0.75 ;
+kw["EMP745"]=  0.75;
+kw["EMP765"]=  0.75;
+kw["EMP1710"]=  0.75;
+kw["EMP1810"]= 0.75 ;
+kw["EMP1825"]= 0.75 ;
+kw["LPXF31S02Z"]= 0.75 ;
+kw["LPXF31W02Z"]= 0.75 ;
+kw["PDF30z"]= 0.75;
+kw["PB8263"]=  0.75;
+kw["PTD5000150"]= 0.75 ;
+kw["PTD5000055"]= 0.75 ;
+kw["PTD5000std"]= 0.75 ;
+kw["THD56001"]=  0.75;
+kw["THD5600std"]=  0.75;
+kw["THD56003"]=  0.75;
+kw["XJ-S30"]=  0.75;
+kw["XJ-S39"]=  0.75;
+kw["V1100z"]=  0.75;
+kw["U4-232"]= 0.75;
+kw["U5-532"]= 0.75;
+kw["U7-137SF"]= 0.75;
+kw["KGPH1004"]= 0.75;
+
+
+kw["TDPT9"]=  0.75;
+kw["TDPT95"]=  0.75;
+kw["TDPT350"]=  0.75;
+kw["EMP8300LS02"]=  0.75;
+kw["EMP8300LW02"]=  0.75;
+kw["EMP8300LM01"]= 0.75;
+kw["EMP7800"]=  0.75;
+kw["EMP7950"]=  0.75;
+kw["EB1720"]= 0.75;
+kw["EB1730W"]= 0.625; //1280x800
+kw["EBZ8455W"]= 0.625; //1920x1200
+kw["EBZ8455WR04"]= 0.625; //1920x1200
+kw["EBZ8455WW04"]= 0.625; //1920x1200
+kw["EBZ8455WM06"]= 0.625; //1920x1200
+kw["EBZ8455WM07"]= 0.625; //1920x1200
+kw["EBZ8050W"]= 0.625; //1280x800
+kw["EBZ8050WR04"]= 0.625; //1280x800
+kw["EBZ8050WW04"]= 0.625; //1280x800
+kw["EBZ8050WM06"]= 0.625; //1280x800
+kw["EBZ8050WM07"]= 0.625; //1280x800
+kw["EMPTW2K"]= 0.5625; //1920x1080
+kw["EBG5350"]= 0.75 ;
+kw["AX100"]=  0.5625; //1280x720
+kw["THAE900"]= 0.5625; //1280x720
+kw["THAE2000"]= 0.5625 ; //1920x1080
+kw["XD205R"]=  0.75;
+kw["XD250"]= 0.75;
+kw["EX200"]= 0.75;
+kw["XD95ST"]= 0.75;
+kw["FLV7K_FR"]= 0.5625; //1920x1080
+kw["FLV7K_SZ"]= 0.5625 ; //1920x1080
+kw["FD630"]= 0.5625 ; //1920x1080;
+kw["HC1100"]=  0.5625; //1280x720
+kw["THDW10000LE6"]= 0.5625 ; //1920x1080
+kw["THDW10000LE1"]= 0.5625 ; //1920x1080
+kw["THDW10000LE2"]= 0.5625 ; //1920x1080
+kw["THDW10000LE3"]= 0.5625 ; //1920x1080
+kw["THDW10000sf5"]= 0.5625 ; //1920x1080
+kw["THD10000LE6"]= 0.75 ; //1400x1050
+kw["THD10000LE1"]= 0.75 ; //1400x1050
+kw["THD10000LE2"]= 0.75 ; //1400x1050
+kw["THD10000LE3"]= 0.75 ; //1400x1050
+kw["THD10000sf5"]= 0.75 ; //1400x1050
+kw["PTDZ8700LE6"]=0.625; //1920x1200
+kw["PTDZ8700LE1"]=0.625; //1920x1200
+kw["PTDZ8700LE2"]= 0.625; //1920x1200
+kw["PTDZ8700LE3"]=0.625; //1920x1200
+kw["PTDZ8700sf5"]=0.625; //1920x1200
+kw["THD7700LE1"]= 0.75 ;
+kw["THD7700LE6"]= 0.75 ;
+kw["THDW7000LE1"]= 0.5622;
+kw["THDW7000LE2"]= 0.5622;
+kw["THDW7000LE3"]= 0.5622;
+kw["THDW7000LE4"]= 0.5622;
+kw["THDW7000LE8"]= 0.5622;
+kw["THDW7000LE6"]= 0.5622;
+kw["THDW7000LE5fix"]= 0.5622;
+kw["PTD6710fix"]=0.625; //1920x1200
+kw["PTD6710DLE080"]=0.625; //1920x1200
+kw["PTD6710DLE150"]=0.625; //1920x1200
+kw["PTD6710fixHD"]=0.5625; //1920x1080
+kw["PTD6710DLE080HD"]=0.5625; //1920x1080
+kw["PTD6710DLE150HD"]=0.5625; //1920x1080
+kw["PTDW6300std"]= 0.625;//1280x800
+kw["PTDW6300DLE150"]= 0.625;//1280x800
+kw["PTDW8300DLE6"]= 0.5622;//1366x768
+kw["PTDW8300DLE5"]= 0.5622;//1366x768
+kw["PTVX400"]= 0.75;
+
+kw["NP500WJ"]= 0.75 ;
+kw["NP325001FL"]= 0.75 ;
+kw["NP325002ZL"]= 0.75 ;
+kw["NP3250std"]= 0.75 ;
+kw["NP3250W01FL"]= 0.625; //1280x800
+kw["NP3250W02ZL"]= 0.625 ; //1280x800
+kw["NP3250Wstd"]= 0.625 ; //1280x800
+kw["NP4k06FL"]= 0.75 ;
+kw["NP4k07ZL"]= 0.75 ;
+kw["NP4k08ZL"]= 0.75 ;
+kw["NP41k06FL"]= 0.6 ; //1280x768
+kw["NP41k07ZL"]= 0.6 ; //1280x768
+kw["NP41k08ZL"]= 0.6 ; //1280x768
+kw["NP60J"]= 0.75 ;
+kw["NP115J"]= 0.75;
+kw["NP300WJ"] = 0.625; //1280x800
+kw["NPPA500UJL11FL"]= 0.625; //1920x1200
+kw["NPPA500UJL12"]= 0.625;
+kw["NPPA500UJL13"]= 0.625;
+kw["NPPX750UJL16FL"]= 0.625; //1920x1200"
+kw["NPPX750UJL17"]= 0.625; //1920x1200"
+kw["NPPX750UJL18"]= 0.625; //1920x1200"
+kw["HL12KHD12Z"]= 0.5625 ; //1920x1080;
+kw["HL12KHD14Z"]= 0.5625 ; //1920x1080;
+kw["HL12KHD10F"]= 0.5625 ; //1920x1080;
+kw["XG9280X"]= 0.75 ;
+kw["TDPEX20"]= 0.75 ;
+kw["TDPEW25"]= 0.625; //1280x800
+kw["CPX1250sf"]= 0.75 ;
+kw["CPSX8350std"]= 0.75; //1400x1050
+kw["LPXL40"]= 0.75 ;
+kw["LPZ2K"]=  0.5625 ; //1920x1080
+kw["DHT8KW52"]=  0.5625 ; //1920x1080
+kw["DHT8KW51"]=  0.5625 ; //1920x1080
+kw["DHT8KW50"]=  0.5625 ; //1920x1080
+kw["DHT8KW53"]=  0.5625 ; //1920x1080
+kw["DHT8KS51"]=  0.5625 ; //1920x1080
+kw["LCWB40DN"]=  0.625; //1280x800
+kw["MP771"]= 0.75 ;
+kw["MP772ST"]= 0.75;
+kw["MP776"]= 0.75 ;
+kw["MW811ST"]=  0.625; //1280x800
+kw["MP624"]= 0.75 ;
+kw["CPA100J"]= 0.75;
+kw["CPRX80J"]= 0.75;
+kw["P5280"]= 0.75;
+kw["X1130"]= 0.75;
+kw["SP890"]= 0.5625 ; //1920x1080 
+kw["SP870"]= 0.75; 
+kw["HD8K116Z"]=  0.5625 ; //1920x1080;
+kw["HD8K067f"]=  0.5625 ; //1920x1080;
+kw["HD10K116"]=  0.5625 ; //1920x1080;
+kw["HD10K11f"]=  0.5625 ; //1920x1080;
+kw["HD10K067f"]=  0.5625 ; //1920x1080;
+
+// panel real
+kr["CX86"]= "1024x768";
+kr["EX3"]= "1024x768";
+kr["EW5"]= "1280x800";
+kr["CX21"]= "1024x768";
+kr["SX50"]= "1400x1050";
+kr["SX80"]= "1400x1050";
+kr["SX6"]= "1400x1050";
+kr["FX52sf"]=  "1024x768";
+kr["FX52lz"]=  "1024x768";
+kr["FX52std"]=  "1024x768";
+kr["FX52sz"]=  "1024x768";
+kr["FX40std"]= "1024x768";
+kr["FX40sz"]= "1024x768";
+kr["FX40sf"]= "1024x768";
+kr["FW41std"]= "1280x800";
+kr["FW41sf"]= "1280x800";
+kr["EP761"]= "1024x768" ;
+kr["EMP82"]= "1024x768" ;
+kr["EMP730"]= "1024x768" ;
+kr["EMP745"]=  "1024x768";
+kr["EMP765"]=  "1024x768";
+kr["EMP1710"]=  "1024x768";
+kr["EMP1810"]= "1024x768" ;
+kr["EMP1825"]= "1024x768" ;
+kr["LPXF31S02Z"]= "1024x768" ;
+kr["LPXF31W02Z"]= "1024x768" ;
+kr["PDF30z"]= "1024x768";
+kr["PB8263"]=  "1024x768";
+kr["PTD5000150"]= "1024x768" ;
+kr["PTD5000055"]= "1024x768" ;
+kr["PTD5000std"]= "1024x768" ;
+kr["THD56001"]=  "1024x768";
+kr["THD5600std"]=  "1024x768";
+kr["THD56003"]=  "1024x768";
+kr["XJ-S30"]=  "1024x768";
+kr["XJ-S39"]=  "1024x768";
+kr["V1100z"]=  "1024x768";
+kr["U4-232"]= "1024x768";
+kr["U5-532"]= "1024x768";
+kr["U7-137SF"]= "1024x768";
+kr["KGPH1004"]= "1024x768";
+
+kr["TDPT9"]=  "1024x768";
+kr["TDPT95"]=  "1024x768";
+kr["TDPT350"]=  "1024x768";
+kr["EMP8300LS02"]=  "1024x768";
+kr["EMP8300LW02"]=  "1024x768";
+kr["EMP8300LM01"]= "1024x768";
+kr["EMP7800"]=  "1024x768";
+kr["EMP7950"]=  "1024x768";
+kr["EB1720"]= "1024x768";
+kr["EB1730W"]= "1280x800";
+kr["EBZ8455W"]= "1920x1200";
+kr["EBZ8455WR04"]= "1920x1200";
+kr["EBZ8455WW04"]= "1920x1200";
+kr["EBZ8455WM06"]= "1920x1200";
+kr["EBZ8455WM07"]= "1920x1200";
+kr["EBZ8050W"]= "1280x800";
+kr["EBZ8050WR04"]= "1280x800";
+kr["EBZ8050WW04"]= "1280x800";
+kr["EBZ8050WM06"]= "1280x800";
+kr["EBZ8050WM07"]= "1280x800";
+kr["EMPTW2K"]= "1920x1080";
+kr["EBG5350"]= "1024x768" ;
+kr["AX100"]=  "1280x720";
+kr["THAE900"]= "1280x720";
+kr["THAE2000"]= "1920x1080" ;
+kr["XD205R"]=  "1024x768";
+kr["XD250"]= "1024x768";
+kr["EX200"]= "1024x768";
+kr["XD95ST"]= "1024x768";
+kr["FLV7K_FR"]= "1920x1080";
+kr["FLV7K_SZ"]= "1920x1080" ;
+kr["FD630"]= "1920x1080";
+kr["HC1100"]=  "1280x720";
+kr["THDW10000LE6"]= "1920x1080" ;
+kr["THDW10000LE1"]= "1920x1080" ;
+kr["THDW10000LE2"]= "1920x1080";
+kr["THDW10000LE3"]= "1920x1080" ;
+kr["THDW10000sf5"]= "1920x1080" ;
+kr["THD10000LE6"]= "1400x1050" ;
+kr["THD10000LE1"]= "1400x1050" ;
+kr["THD10000LE2"]= "1400x1050";
+kr["THD10000LE3"]= "1400x1050" ;
+kr["THD10000sf5"]= "1400x1050" ;
+kr["PTDZ8700LE6"]= "1920x1200" ;
+kr["PTDZ8700LE1"]= "1920x1200" ;
+kr["PTDZ8700LE2"]= "1920x1200";
+kr["PTDZ8700LE3"]= "1920x1200" ;
+kr["PTDZ8700sf5"]= "1920x1200" ;
+kr["THD7700LE1"]= "1024x768" ;
+kr["THD7700LE6"]= "1024x768" ;
+kr["THDW7000LE1"]= "1366x768";
+kr["THDW7000LE2"]= "1366x768";
+kr["THDW7000LE3"]= "1366x768";
+kr["THDW7000LE4"]= "1366x768";
+kr["THDW7000LE8"]= "1366x768";
+kr["THDW7000LE6"]= "1366x768";
+kr["THDW7000LE5fix"]= "1366x768";
+kr["PTD6710fix"]="1920x1200";
+kr["PTD6710DLE080"]="1920x1200";
+kr["PTD6710DLE150"]="1920x1200";
+kr["PTD6710fixHD"]="1920x1080";
+kr["PTD6710DLE080HD"]="1920x1080";
+kr["PTD6710DLE150HD"]="1920x1080";
+kr["PTDW6300std"]= "1280x800";
+kr["PTDW6300DLE150"]= "1280x800";
+kr["PTDW8300DLE6"]= "1366x768";
+kr["PTDW8300DLE5"]= "1366x768";
+kr["PTVX400"]= "1024x768" ;
+
+
+kr["NP500WJ"]= "1024x768" ;
+kr["NP325001FL"]= "1024x768" ;
+kr["NP325002ZL"]= "1024x768" ;
+kr["NP3250std"]= "1024x768" ;
+kr["NP3250W01FL"]= "1280x800" ;
+kr["NP3250W02ZL"]= "1280x800" ;
+kr["NP3250Wstd"]= "1280x800" ;
+kr["NP4k06FL"]= "1024x768" ;
+kr["NP4k07ZL"]= "1024x768" ;
+kr["NP4k08ZL"]= "1024x768" ;
+kr["NP41k06FL"]= "1280x768" ;
+kr["NP41k07ZL"]= "1280x768" ;
+kr["NP41k08ZL"]= "1280x768" ;
+kr["NP60J"]= "1024x768" ;
+kr["NP115J"]= "1024x768";
+kr["NP300WJ"]="1280x800";
+kr["NPPA500UJL11FL"]= "1920x1200";
+kr["NPPA500UJL12"]= "1920x1200";
+kr["NPPA500UJL13"]= "1920x1200";
+kr["NPPX750UJL16FL"]= "1920x1200";
+kr["NPPX750UJL17"]=  "1920x1200";
+kr["NPPX750UJL18"]=  "1920x1200";
+kr["HL12KHD12Z"]= "1920x1080";
+kr["HL12KHD14Z"]= "1920x1080";
+kr["HL12KHD10F"]= "1920x1080";
+kr["XG9280X"]= "1024x768" ;
+kr["TDPEX20"]= "1024x768" ;
+kr["TDPEW25"]= "1280x800";
+kr["CPX1250sf"]= "1024x768" ;
+kr["CPSX8350std"]= "1400x1050";
+kr["LPXL40"]= "1024x768" ;
+kr["LPZ2K"]=  "1920x1080" ;
+kr["DHT8KW52"]="1920x1080";
+kr["DHT8KW51"]="1920x1080";
+kr["DHT8KW50"]="1920x1080";
+kr["DHT8KW53"]="1920x1080";
+kr["DHT8KS51"]="1920x1080";
+kr["LCWB40DN"]=  "1280x800";
+kr["MP771"]= "1024x768" ;
+kr["MP772ST"]= "1024x768";
+kr["MP776"]= "1024x768" ;
+kr["MW811ST"]=  "1280x800";
+kr["MP624"]= "1024x768" ;
+kr["SP890"]= "1920x1080" ; 
+kr["SP870"]= "1024x768" ; 
+kr["CPA100J"]= "1024x768";
+kr["CPRX80J"]= "1024x768";
+kr["P5280"]= "1024x768";
+kr["X1130"]= "1024x768";
+kr["HD8K116Z"]= "1920x1080" ;
+kr["HD8K067f"]= "1920x1080";
+kr["HD10K116"]= "1920x1080" ;
+kr["HD10K11f"]= "1920x1080" ;
+kr["HD10K067f"]= "1920x1080" ;
+
+
+
+function send_ai(){
+	alert("okinit");
+app = new ActiveXObject('Illustrator.Application');   // (A)
+	alert("okactiveX");
+docRef =app.ActiveDocument;                       // (B)
+	alert("okaDoc");
+//lineList = new Array();
+//var newPath = new Array();
+
+
+//		app.DefaultStroked = true;
+
+		var p = docRef.PathItems.Add();
+	alert("ok2");
+		 p.setEntirePath([[20,10],[200,100],[20,10]]);
+	alert("ok3");
+
+		 lineList[0] = new Array( 20,50 );
+		 lineList[1] = new Array( 20, 100 );
+		 //newPath[1] = docRef.PathItems.Add();
+		 //newPath[1].SetEntirePath(lineList);
+	alert("ok4");
+
+	docRef.redraw();
+	alert("ok5");
+
+}
+
+
+
+function chg_num(s){
+	var ss;
+	var i;
+
+	ss=s.value;
+
+	ss=ss.replace(/[‚P‚ ]/g,"1");
+	ss=ss.replace(/[‚Q‚©]/g,"2");
+	ss=ss.replace(/[‚R‚³]/g,"3");
+	ss=ss.replace(/[‚S‚½]/g,"4");
+	ss=ss.replace(/[‚T‚È]/g,"5");
+	ss=ss.replace(/[‚U‚Í]/g,"6");
+	ss=ss.replace(/[‚V‚Ü]/g,"7");
+	ss=ss.replace(/[‚W‚â]/g,"8");
+	ss=ss.replace(/[‚X‚ç]/g,"9");
+	ss=ss.replace(/[‚O‚í]/g,"0");
+	ss=ss.replace(/[h"gJ]/g,"\.");
+	ss=ss.replace(/[‚ð]/g,"00");
+	ss=ss.replace(/[‚ñ]/g,"000");
+	ss=ss.replace(/[‚¢]/g,"11");
+	ss=ss.replace(/[‚«]/g,"22");
+	ss=ss.replace(/[‚µ]/g,"33");
+	ss=ss.replace(/[‚¿]/g,"44");
+	ss=ss.replace(/[‚É]/g,"55");
+	ss=ss.replace(/[‚Ð]/g,"66");
+	ss=ss.replace(/[‚Ý]/g,"77");
+	ss=ss.replace(/[‚ä]/g,"88");
+	ss=ss.replace(/[‚è]/g,"99");
+	s.value=ss;
+
+}
+
+
+function calc_info(a,F,i,r){ 
+	if(a==0.75)
+	{
+		F.A.value="*4:3";
+		F.wA.value="  16:9";
+		
+		
+		F.I.value=Math.round(i*10)/10;
+		F.W.value=Math.round(i*25.4/5*4*10)/10;
+		F.H.value=Math.round(i*25.4/5*3*10)/10;
+		
+		
+		F.wI.value=Math.round((F.W.value)/16*18.357559751/25.4*10)/10;
+		F.wW.value=F.W.value;
+		F.wH.value=Math.round((F.W.value)/16*9*10)/10;
+	}
+	else
+	{
+		F.A.value="  4:3";
+		F.wA.value="* "+r;
+
+		ta=Math.sqrt(1+a*a);
+		
+		F.wI.value=Math.round(i*10)/10;
+		//F.wW.value=Math.round(i*16*25.4/18.357559751*10)/10;
+		//F.wH.value=Math.round(i*9*25.4/18.357559751*10)/10;
+		F.wW.value=Math.round(i*25.4/ta*10)/10;
+		F.wH.value=Math.round(i*25.4/ta*a*10)/10;
+		
+		F.I.value=Math.round(F.wH.value/3*5/25.4*10)/10;
+		F.W.value=Math.round(F.wH.value/3*4*10)/10;
+		F.H.value=F.wH.value;
+	}
+}
+
+function getpjindex(p)
+{
+	return( p.options[p.selectedIndex].value );
+}
+
+function chg_color(c,p1,p2,p3,p4)
+{
+	p1.style.color = c;
+	p2.style.color = "#000000";
+	p3.style.color = "#000000";
+	p4.style.color = "#000000";
+}
+
+function c_d(n,F,wh)
+{
+	p=gPJ;
+	s=ks[p];l=kl[p];a=kw[p];
+	r=kr[p];
+	chg_num(F.PJ_i);
+	i=eval(F.PJ_i.value);
+	chg_num(F.PJ_di);
+	d=(F.PJ_di.value);
+	if(n==1)
+	{//inch
+		if(wh==1)
+		{
+			if(a==0.75)
+			{
+				i=i/25.4/4*5;
+			}
+			else
+			{
+				//i=i/25.4/16*18.357559751;
+				i=Math.sqrt(Math.pow(i,2)+Math.pow(i*a,2))/25.4;
+			}
+		}
+		else if(wh==2)
+		{
+			if(a==0.75)
+			{
+				i=i/25.4/3*5;
+			}
+			else
+			{
+				//i=i/25.4/9*18.357559751;
+				i=Math.sqrt(Math.pow(i/a,2)+Math.pow(i,2))/25.4;
+			}
+		}
+		F.PJ_i.value=Math.round(i*10)/10;
+		INCHES=Math.round(i*10)/10;
+		//F.SDi.value=Math.round(s*i/100*10)/10;
+		//F.LDi.value=Math.round(l*i/100*10)/10;
+		F.SDi.value=Math.round(eval(s)*10)/10;
+		F.LDi.value=Math.round(eval(l)*10)/10;
+		F.Di.value=F.SDi.value;
+		calc_info(a,F,i,r);
+	}
+	else
+	{//dist
+		INCHES=100;
+		F.SI.value=Math.round(d/eval(l)*100*10)/10;
+		F.LI.value=Math.round(d/eval(s)*100*10)/10;
+	}
+}
+
+function clipSD(F){
+F.clipAI.value = gPJ + " " +F.I.value+ "inch," +F.W.value+ "Wx" +F.H.value +"H" +
+ ":" + F.SDi.value + "-" + F.LDi.value  + "mm"; 
+// clipboardData.setData("text",F.clipAI.value);
+}
+function clipHD(F){
+F.clipwAI.value = gPJ + " " +F.wI.value+ "inch," +F.wW.value+ "Wx" +F.wH.value + "H" +
+ ":" + F.SDi.value + "-" + F.LDi.value + "mm" ; 
+}
+
+function calc_aspect(f,m,u)
+{
+	if(u==0)
+	{
+		chg_num(f.aw);
+		chg_num(f.ah);
+		chg_num(f.ai);
+		aw=eval(f.aw.value);
+		ah=eval(f.ah.value);
+		ai=eval(f.ai.value);
+		
+		a=ah/aw;
+		ta=Math.sqrt(1+a*a);
+		if(m==0)
+		{
+			f.aiw.value=Math.round(ai*25.4/ta*10)/10;
+			f.aih.value=Math.round(ai*25.4/ta*a*10)/10;
+		}else if(m==1)
+		{
+			f.aiw.value=ai;
+			f.aih.value=Math.round(ai*a*10)/10;
+			f.ai.value=Math.round(ai*ta/25.4*10)/10;
+		}else
+		{
+			f.aiw.value=Math.round(ai/a*10)/10;
+			f.aih.value=ai;
+			f.ai.value=Math.round(ai/a*ta/25.4*10)/10;
+		}
+	}
+	else
+	{
+		chg_num(f.aw1);
+		chg_num(f.ah1);
+		chg_num(f.ai1);
+		aw=eval(f.aw1.value);
+		ah=eval(f.ah1.value);
+		ai=eval(f.ai1.value);
+		
+		a=ah/aw;
+		ta=Math.sqrt(1+a*a);
+		if(m==0)
+		{
+			f.aiw1.value=Math.round(ai*25.4/ta*10)/10;
+			f.aih1.value=Math.round(ai*25.4/ta*a*10)/10;
+		}else if(m==1)
+		{
+			f.aiw1.value=ai;
+			f.aih1.value=Math.round(ai*a*10)/10;
+			f.ai1.value=Math.round(ai*ta/25.4*10)/10;
+		}else
+		{
+			f.aiw1.value=Math.round(ai/a*10)/10;
+			f.aih1.value=ai;
+			f.ai1.value=Math.round(ai/a*ta/25.4*10)/10;
+		}
+	}
+	
+	
+}
+
+function calc_cam(H,W,D,I2,I3,I4){
+
+	chg_num(H);
+	chg_num(W);
+	chg_num(D);
+	chg_num(I2);
+	chg_num(I3);
+	chg_num(I4);
+
+ th=parseFloat(H.value);
+	tw=parseFloat(W.value);
+	td=parseFloat(D.value);
+	t2=parseFloat(I2.value);
+	t3=parseFloat(I3.value);
+	t4=parseFloat(I4.value);
+
+
+		W.value=Math.round(th/4*3*100)/100;
+		I2.value=Math.round(6.4/th*td*100)/100;
+		I3.value=Math.round(4.8/th*td*100)/100;
+		I4.value=Math.round(3.6/th*td*100)/100;
+}
+
+function skp_pjsize(m){
+window.location='skp:on_pjsize@'+m;
+}
+
+
+
+//-->
+
+</script><form name="fpj">
+<table></table><table style="width: 25%;" border="1"><tbody><tr><th>PJ A-C</th>
+<td style="font-family: monospace;"><small><small><small><select onfocus="gPJ=getpjindex(Pj1);c_d(1,this.form,0);c_d(2,this.form,0);chg_color('red',Pj1,Pj2,Pj3,Pj4)"  onchange="this.onfocus()" name="Pj1">
+
+	<option value="P5280" selected="selected">ACER P5280
+	</option><option value="X1130">ACER X1130
+
+	</option><option value="MP771">BENQ MP771
+	</option><option value="MP772ST">BENQ MP772ST
+	</option><option value="MP776">BENQ MP776
+	</option><option value="MP624">Benq MP624
+	</option><option value="MW811ST">BENQ MW811ST
+	</option><option value="SP890">BENQ SP890
+	</option><option value="SP870">BENQ SP870
+	</option><option value="PB8263">BENQ PB8263
+
+	<option value="SX50" selected="selected">Canon SX50
+	</option><option value="SX80" >Canon SX80
+	</option><option value="SX6">Canon SX6/7
+
+	</option><option value="XJ-S30">CASIO XJ-S30
+	</option><option value="XJ-S39">CASIO XJ-S39
+
+	</option><option value="HD8K116Z">Christie HD8K-M 1.16z
+	</option><option value="HD8K067f">Christie HD8K-M 0.67f
+	</option><option value="HD10K116">Christie HD10K-M 1.16z
+	</option><option value="HD10K11f">Christie HD10K-M 1.1f
+	</option><option value="HD10K067f">Christie HD10K-M 0.67f
+
+
+</option></select></small></small></small></td></tr>
+<tr><th>PJ E-O</th>
+<td style="font-family: monospace;"><small><small><small><select onfocus="gPJ=getpjindex(Pj2);c_d(1,this.form,0);c_d(2,this.form,0);chg_color('red',Pj2,Pj1,Pj3,Pj4)"  onchange="this.onfocus()" name="Pj2">
+
+	<option value="EMP82" selected="selected">EPSON EMP82
+	</option><option value="EMP730">EPSON EMP730
+	</option><option value="EMP745">EPSON EMP745
+	</option><option value="EMP765">EPSON EMP765
+	</option><option value="EMP1710">EPSON EMP1710
+	</option><option value="EMP1810">EPSON EMP1810
+	</option><option value="EMP1825">EPSON EMP1825
+	</option><option value="EMP8300LS02">EPSON EMP8300LS02
+	</option><option value="EMP8300LW02">EPSON EMP8300LW02 
+	</option><option value="EMP8300LM01">EPSON EMP8300LM01 
+	</option><option value="EMP7800">EPSON EMP7800
+	</option><option value="EMP7950">EPSON EMP7950
+	</option><option value="EB1720">EPSON EB1720
+	</option><option value="EB1730W">EPSON EB1730W
+	</option><option value="EBZ8455W">EPSON EBz8455WU
+	</option><option value="EBZ8455WR04">EPSON EBz8455WU ELPLR04
+	</option><option value="EBZ8455WW04">EPSON EBz8455WU ELPLW04
+	</option><option value="EBZ8455WM06">EPSON EBz8455WU ELPLM06
+	</option><option value="EBZ8455WM07">EPSON EBz8455WU ELPLM07
+	</option><option value="EBZ8050W">EPSON EBz8050W
+	</option><option value="EBZ8050WR04">EPSON EBz8050W ELPLR04
+	</option><option value="EBZ8050WW04">EPSON EBz8050W ELPLW04
+	</option><option value="EBZ8050WM06">EPSON EBz8050W ELPLM06
+	</option><option value="EBZ8050WM07">EPSON EBz8050W ELPLM07
+	</option><option value="EMPTW2K">EPSON EMPTW2000
+	</option><option value="EBG5350">EPSON EB-G5350
+
+	</option><option value="CPA100J">HITACHI CP-A100J
+	</option><option value="CPRX80J">HITACHI CP-RX80J
+	</option><option value="CPX1250sf">HITACHI CP-X1250Jsf
+	</option><option value="CPSX8350std">HITACHI CP-SX8350std
+
+	</option><option value="XD205R">MITSUBISHI XD-205R 
+	</option><option value="XD250">MITSUBISHI XD-250 
+	</option><option value="EX200">MITSUBISHI LVP-EX200 
+	</option><option value="XD95ST">MITSUBISHI LVP-XD95ST 
+	</option><option value="FLV7K_FR">MITSUBISHI LVP-FL7000 FR
+	</option><option value="FLV7K_SZ">MITSUBISHI LVP-FL7000 SZ
+	</option><option value="FD630">MITSUBISHI LVP-FD630
+	</option><option value="HC1100">MITSUBISHI LVP-HC1100 
+
+	</option><option value="NP500WJ">NEC NP500WJ
+	</option><option value="NP325001FL">NEC NP3250J NP01FL
+	</option><option value="NP325002ZL">NEC NP3250J NP02ZL
+	</option><option value="NP3250std">NEC NP3250J std
+	</option><option value="NP3250W01FL">NEC NP3250WJ NP01FL
+	</option><option value="NP3250W02ZL">NEC NP3250WJ NP02ZL
+	</option><option value="NP3250Wstd">NEC NP3250WJ std
+	</option><option value="NP4k06FL">NEC NP4000J NP06FL
+	</option><option value="NP4k07ZL">NEC NP4000J NP07ZL
+	</option><option value="NP4k08ZL">NEC NP4000J NP08ZL
+	</option><option value="NP41k06FL">NEC NP4001J NP06FL
+	</option><option value="NP41k07ZL">NEC NP4001J NP07ZL
+	</option><option value="NP41k08ZL">NEC NP4001J NP08ZL
+	</option><option value="NP60J">NEC NP60J
+	</option><option value="NP115J">NEC NP115J
+	</option><option value="NP300WJ">NEC NPM300WJL
+	</option><option value="NPPA500UJL11FL">NEC NP-PA500UJL+11FL
+	</option><option value="NPPA500UJL12">NEC NP-PA500UJL+12
+	</option><option value="NPPA500UJL13">NEC NP-PA500UJL+13
+	</option><option value="NPPX750UJL16FL">NEC NP-PX750UJL+16FL
+	</option><option value="NPPX750UJL17">NEC NP-PX750UJL+17ZL
+	</option><option value="NPPX750UJL18">NEC NP-PX750UJL+18ZL
+	</option><option value="HL12KHD12Z">NEC HL12000HD L2K-12ZHB
+	</option><option value="HL12KHD14Z">NEC HL12000HD L2K-14ZHB
+	</option><option value="HL12KHD10F">NEC HL12000HD L2K-10F
+
+	</option><option value="EP761">Optoma EP761
+
+
+</option></select></small></small></small></td></tr>
+<tr><th>PJ P</th>
+<td style="font-family: monospace;"><small><small><small><select onfocus="gPJ=getpjindex(Pj3);c_d(1,this.form,0);c_d(2,this.form,0);chg_color('red',Pj3,Pj1,Pj2,Pj4)"  onchange="this.onfocus()" name="Pj3">
+
+	<option value="AX100" selected="selected">Panasonic AX-100
+	</option><option value="THAE900">Panasonic TH-AE900
+	</option><option value="THAE2000">Panasonic TH-AE2000
+	</option><option value="PTD5000150">PT-D5000 DLE150
+	</option><option value="PTD5000055">PT-D5000 DLE055
+	</option><option value="PTD5000std">PT-D5000 DLEstd
+	</option><option value="THD56001">THD5600 ET-DLE100
+	</option><option value="THD5600std">THD5600std
+	</option><option value="THD56003">THD5600 ET-DLE300
+	</option><option value="THDW10000LE6">Panasonic TH-DW10000LE6
+	</option><option value="THDW10000LE1">Panasonic TH-DW10000LE1
+	</option><option value="THDW10000LE2">Panasonic TH-DW10000LE2
+	</option><option value="THDW10000LE3">Panasonic TH-DW10000LE3
+	</option><option value="THDW10000sf5">Panasonic TH-DW10000sf
+	</option><option value="THD10000LE6">Panasonic TH-D10000LE6
+	</option><option value="THD10000LE1">Panasonic TH-D10000LE1
+	</option><option value="THD10000LE2">Panasonic TH-D10000LE2
+	</option><option value="THD10000LE3">Panasonic TH-D10000LE3
+	</option><option value="THD10000sf5">Panasonic TH-D10000sf
+	</option><option value="PTDZ8700LE6">Panasonic PT-DZ8700LE6
+	</option><option value="PTDZ8700LE1">Panasonic PT-DZ8700LE1
+	</option><option value="PTDZ8700LE2">Panasonic PT-DZ8700LE2
+	</option><option value="PTDZ8700LE3">Panasonic PT-DZ8700LE3
+	</option><option value="PTDZ8700sf5">Panasonic PT-DZ8700sf
+	</option><option value="THD7700LE1">Panasonic TH-D7700LE1
+	</option><option value="THD7700LE6">Panasonic TH-D7700LE6
+	</option><option value="THDW7000LE1">Panasonic TH-DW7000LE1
+	</option><option value="THDW7000LE2">Panasonic TH-DW7000LE2
+	</option><option value="THDW7000LE3">Panasonic TH-DW7000LE3
+	</option><option value="THDW7000LE4">Panasonic TH-DW7000LE4
+	</option><option value="THDW7000LE8">Panasonic TH-DW7000LE8
+	</option><option value="THDW7000LE6">Panasonic TH-DW7000LE6
+	</option><option value="THDW7000LE5fix">Panasonic TH-DW7000LE5fix
+	</option><option value="PTD6710fix">Panasonic PT-DZ6710 fix 
+	</option><option value="PTD6710DLE080">Panasonic PT-DZ6710 DLE080
+	</option><option value="PTD6710DLE150">Panasonic PT-DZ6710 DLE150
+	</option><option value="PTD6710fixHD">Panasonic PT-DZ6710 16:9 fix 
+	</option><option value="PTD6710DLE080HD">Panasonic PT-DZ6710 16:9 DLE080
+	</option><option value="PTD6710DLE150HD">Panasonic PT-DZ6710 16:9 DLE150
+	</option><option value="PTDW6300std">Panasonic PT-DW6300 std
+	</option><option value="PTDW6300DLE150">Panasonic PT-DW6300 DLE150
+	</option><option value="PTDW8300DLE6">Panasonic PT-DW8300 DLE6
+	</option><option value="PTDW8300DLE5">Panasonic PT-DW8300 DLE5fix
+	</option><option value="PTVX400">Panasonic PT-VX400
+
+	</option><option value="PDF30z">PjDesignF30 1.3-1.7
+
+	</option><option value="V1100z">PLUS V1100z 
+	</option><option value="U4-232">PLUS U4-232
+	</option><option value="U5-532">PLUS U5-532H
+	</option><option value="U7-137SF">TAXAN U7-137SF
+	</option><option value="KGPH1004">TAXAN KG-PH1004XS
+
+
+</option></select></small></small></small></td></tr>
+<tr><th>PJ S-T</th>
+<td style="font-family: monospace;"><small><small><small><select onfocus="gPJ=getpjindex(Pj4);c_d(1,this.form,0);c_d(2,this.form,0);chg_color('red',Pj4,Pj1,Pj2,Pj3)"  onchange="this.onfocus()" name="Pj4">
+
+	<option value="LPXF31S02Z" selected="selected">SANYO LP-XF31 S02
+	</option><option value="LPXF31W02Z">SANYO LP-XF31 W02
+	</option><option value="LPXL40">SANYO LP-XL40
+	</option><option value="LPZ2K">SANYO LP-Z2000
+	</option><option value="DHT8KW52">SANYO PDG-DHT8000JL+W52fix
+	</option><option value="DHT8KW51">SANYO PDG-DHT8000JL+W51
+	</option><option value="DHT8KW50">SANYO PDG-DHT8000JL+W50
+	</option><option value="DHT8KW53">SANYO PDG-DHT8000JL+W53
+	</option><option value="DHT8KS51">SANYO PDG-DHT8000JL+S51
+	</option><option value="LCWB40DN">SANYO LC-WB40DN
+
+	</option><option value="XG9280X">SHARP XG-9280X
+
+	</option><option value="CX86">SONY CX86
+	</option><option value="EX3">SONY EX3
+	</option><option value="EW5">SONY EW5
+	</option><option value="CX21">SONY CX21
+	</option><option value="FX52sf">SONY FX52sf
+	</option><option value="FX52lz">SONY FX52lz
+	</option><option value="FX52std">SONY FX52std
+	</option><option value="FX52sz">SONY FX52sz 
+	</option><option value="FX40std">SONY FX40std
+	</option><option value="FX40sz">SONY FX40shortzoom 
+	</option><option value="FX40sf">SONY FX40sf 
+	</option><option value="FW41std">SONY FW41std 
+	</option><option value="FW41sf">SONY FW41sf 
+
+	</option><option value="TDPT9">TOSHIBA TDPT9
+	</option><option value="TDPT95">TOSHIBA TDPT95
+	</option><option value="TDPT350">TOSHIBA TDPT350
+	</option><option value="TDPEX20">TOSHIBA TDP-EX20
+	</option><option value="TDPEW25">TOSHIBA TDP-EW25
+
+</option></select></small></small></small></td></tr></tbody></table><table style="width: 230px; height: 109px;"><tbody><tr><td>
+<input value="i" onclick="c_d(1,this.form,0)" type="button">
+<input value="w" onclick="c_d(1,this.form,1)" type="button">
+<input value="h" onclick="c_d(1,this.form,2)" type="button">
+</td><td>short</td><td>long</td></tr><tr>
+<td bgcolor="green"><input size="20" value="100" name="PJ_i"></td>
+<td><input size="10" value="0" id="skpSDi" name="SDi"></td>
+<td><input size="10" value="0" id="skpLDi" name="LDi"></td>
+</tr><tr>
+<td><input value="distance" onclick="c_d(2,this.form,0)" type="button">
+</td><td>small</td><td style="width: 50px;">large</td></tr><tr>
+<td bgcolor="green"><input value="5000" name="PJ_di" type="text"></td>
+<td><input size="10" value="0" name="SI"></td>
+<td><input size="10" value="0" name="LI"></td>
+</tr></tbody></table>
+info<br><input value="send SKP" onclick="skp_pjsize(1)" type="button">
+<input onclick="skp_pjsize(2)" value="send SKP16" type="button">
+distance
+<input size="10" name="Di" id="skpDi" value="0">
+<table><tbody><tr><td style="width: 10px;">aspect</td><td>inch</td><td>wide</td><td>height</td></tr><tr>
+<td><input size="10" value="*4:3" name="A">
+	</td><td><input size="10" value="0" id="skpI" name="I">
+	</td><td><input size="10" value="0" id="skpW" name="W">
+	</td><td><input size="10" value="0" id="skpH" name="H"></td></tr><tr>
+<td><input size="10" value="  16:9" name="wA">
+</td><td><input size="10" value="0" id="skpI16" name="wI">
+</td><td><input size="10" value="0" id="skpW16" name="wW">
+</td><td><input size="10" value="0" id="skpH16" name="wH">
+</td></tr>
+</tbody></table>
+<table><tbody>
+<td><input size="10" value="clip 4:3 " name="clipA" onclick="clipSD(this.form)" type="button">
+</td><td><input size="40" value="0" id="clipAI" name="clipAI">
+</td></tr>
+<td><input size="10" value="clip 16:9 " name="clipwA"  onclick="clipHD(this.form)" type="button">
+</td><td><input size="40" value="0" id="clipwAI" name="clipwAI">
+</td></tr>
+</tbody></table>
+
+<input onclick="send_ai()" value="send AI" type="button">
+
+<br>
+<table><tbody>
+		<td><b>aspect</b>
+			</td><td bgcolor="blue"><input size="10" value="16" id="aw" name="aspW">
+			</td><td bgcolor="blue"><input size="10" value="9" id="ah" name="aspH">
+</td></tr>
+</tbody></table>
+
+
+<table><tbody>
+		<td>
+			<input  value="i" onclick="calc_aspect(this.form,0,0)" type="button">
+			<input  value="w" onclick="calc_aspect(this.form,1,0)" type="button">
+			<input  value="h" onclick="calc_aspect(this.form,2,0)" type="button">
+			</td><td bgcolor="blue"><input size="10" value="100" id="ai" name="aspI">
+</td><td><input size="10" value="2000" id="aiw" name="aspIW">
+</td><td><input size="10" value="1500" id="aih" name="aspIH">
+</td></tr>
+</tbody></table>
+
+<table><tbody>
+		<td><b>aspect</b>
+			</td><td bgcolor="blue"><input size="10" value="16" id="aw1" name="aspW1">
+			</td><td bgcolor="blue"><input size="10" value="10" id="ah1" name="aspH1">
+</td></tr>
+</tbody></table>
+
+
+<table><tbody>
+		<td>
+			<input  value="i" onclick="calc_aspect(this.form,0,1)" type="button">
+			<input  value="w" onclick="calc_aspect(this.form,1,1)" type="button">
+			<input  value="h" onclick="calc_aspect(this.form,2,1)" type="button">
+</td><td bgcolor="blue"><input size="10" value="100" id="ai1" name="aspI1">
+</td><td><input size="10" value="2000" id="aiw1" name="aspIW1">
+</td><td><input size="10" value="1500" id="aih1" name="aspIH1">
+</td></tr>
+</tbody></table>
+
+
+<B>Camera F</B>
+<table>
+<table border="1">
+<tbody>
+<tr>
+<td><b>Width</b></dt>
+<td>Height</dt>
+<td><b>Distance</b></dt>
+</tr>
+<tr>
+<td bgcolor="purple"><input size="10" type="text" value="1600" id="skpCamW" name="CAM_W" onchange="calc_cam(this.form.CAM_W,this.form.CAM_H,this.form.CAM_D,this.form.CAM_2,this.form.CAM_3,this.form.CAM_4);"/></td>
+<td><input size="10" type="text" value="1200" style="ime-mode:disabled" id="skpCamH" name="CAM_H"/></td>
+<td bgcolor="purple"><input size="10" type="text" value="3200" id="skpCamD" name="CAM_D" onchange="calc_cam(this.form.CAM_W,this.form.CAM_H,this.form.CAM_D,this.form.CAM_2,this.form.CAM_3,this.form.CAM_4);"/></td>
+</tr>
+
+
+<tr>
+<td>1/2</dt>
+<td>1/3</dt>
+<td>1/4</dt>
+</tr>
+<tr>
+<td><input size="10" type="text" value="12.8" id="skpF_2" name="CAM_2"/></td>
+<td><input size="10" type="text" value="9.6" id="skpF_3" name="CAM_3"/></td>
+<td><input size="10" type="text" value="7.2" id="skpF_4" name="CAM_4"/></td>
+</tr>
+<tr>
+<input value="send SKP" onclick="skp_pjsize(10)" type="button">
+</tr>
+
+
+
+</tbody></table></form></body></html>
